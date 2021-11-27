@@ -27,7 +27,7 @@ function App() {
         setTasks([newTask,...tasks])
     }
 
-    let [filter, setFilter] = useState<FilterValuesType>("all");
+   /* let [filter, setFilter] = useState<FilterValuesType>("all");
 
     let tasksForTodolist = tasks;
 
@@ -40,15 +40,14 @@ function App() {
 
     function changeFilter(value: FilterValuesType) {
         setFilter(value);
-    }
+    }*/
 
     return (
         <div className="App">
             <Todolist
                 title="What to learn"
-                tasks={tasksForTodolist}
+                tasks={tasks}
                 removeTask={removeTask}
-                changeFilter={changeFilter}
                 addTask={addTask}
             />
         </div>
