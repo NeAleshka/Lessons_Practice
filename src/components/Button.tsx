@@ -9,8 +9,7 @@ export const Button = (props: propsButtonType) => {
    const onClickHundler=()=>{
        props.callBack()
    }
-
-    return (
+   return (
         <button onClick={onClickHundler}>{props.name}</button>
     )
 }
