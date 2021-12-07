@@ -1,5 +1,5 @@
 .error {
-    border: red 5px solid;
+    border: red 3px solid;
 }
 
 .errorMessage {
@@ -10,7 +10,9 @@
     background-color: aquamarine;
 }
 
-
 .isDone {
     opacity: 0.5;
 }
+
+
+
