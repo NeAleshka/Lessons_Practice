@@ -1,127 +1,28 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './App.css';
-import {TaskType, Todolist} from './Todolist';
-import {v1} from 'uuid';
-import SuperInput from "./SuperInput";
+import {Todolist} from './Todolist';
+import {addTaskAC, removeTaskAC} from "./reducers/TasksReducer";
+import {useDispatch} from "react-redux";
 
 export type FilterValuesType = "all" | "active" | "completed";
-type TodolistType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
-
-type TasksStateType = {
-    [key: string]: Array<TaskType>
-}
-
 
 function App() {
-    let todolistId1 = v1();
-    let todolistId2 = v1();
+    let dispatch=useDispatch()
 
-    let [todoLists, setTodoLists] = useState<Array<TodolistType>>([
-        {id: todolistId1, title: "What to learn", filter: "all"},
-        {id: todolistId2, title: "What to buy", filter: "all"}
-    ])
-    let [tasks, setTasks] = useState<TasksStateType>({
-        [todolistId1]: [
-            {id: v1(), title: "HTML&CSS", isDone: true},
-            {id: v1(), title: "JS", isDone: true}
-        ],
-        [todolistId2]: [
-            {id: v1(), title: "Milk", isDone: true},
-            {id: v1(), title: "React Book", isDone: true}
-        ]
-    });
 
-    function removeTask(id: string, todolistId: string) {
-        //достанем нужный массив по todolistId:
-        let todolistTasks = tasks[todolistId];
-        // перезапишем в этом объекте массив для нужного тудулиста отфилтрованным массивом:
-        tasks[todolistId] = todolistTasks.filter(t => t.id !== id);
-        // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-        setTasks({...tasks});
+    function removeTask(id: string) {
+        dispatch(removeTaskAC(id))
     }
-    function addTask(title: string, todolistId: string) {
-        let task = {id: v1(), title: title, isDone: false};
-        //достанем нужный массив по todolistId:
-        let todolistTasks = tasks[todolistId];
-        // перезапишем в этом объекте массив для нужного тудулиста копией, добавив в начало новую таску:
-        tasks[todolistId] = [task, ...todolistTasks];
-        // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-        setTasks({...tasks});
-    }
-    function changeStatus(id: string, isDone: boolean, todolistId: string) {
-        //достанем нужный массив по todolistId:
-        let todolistTasks = tasks[todolistId];
-        // найдём нужную таску:
-        let task = todolistTasks.find(t => t.id === id);
-        //изменим таску, если она нашлась
-        if (task) {
-            task.isDone = isDone;
-            // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-            setTasks({...tasks});
-        }
-    }
-    function changeFilter(value: FilterValuesType, todolistId: string) {
-        let todolist = todoLists.find(tl => tl.id === todolistId);
-        if (todolist) {
-            todolist.filter = value;
-            setTodoLists([...todoLists])
-        }
-    }
-    function removeTodolist(id: string) {
-        // засунем в стейт список тудулистов, id которых не равны тому,который нужно выкинуть
-        setTodoLists(todoLists.filter(tl => tl.id !== id));
-        // удалим таски для этого тудулиста из второго стейта, где мы храним отдельно таски
-        delete tasks[id]; // удаляем св-во из объекта... значением которого являлся массив тасок
-        // засетаем в стейт копию объекта, чтобы React отреагировал перерисовкой
-        setTasks({...tasks});
-    }
-    function addTodoList(title:string) {
-       let newTodoId=v1()
-        let newTodo:TodolistType={id:newTodoId, title:title,filter:'all'}
-        setTodoLists([newTodo,...todoLists])
-        setTasks({...tasks,[newTodoId]:[]})
-    }
-
-    function updateTask(todoListId:string,id:string ,localTitle:string){
-        setTasks({...tasks,[todoListId]:tasks[todoListId].map(m=>m.id===id?{...m,title:localTitle}:m)})
-    }
-
-    function updateTitle(todoListId:string,localTitle:string){
-        setTodoLists(todoLists.map(m=>m.id===todoListId?{...m,title:localTitle}:m))
+    function addTask(title: string) {
+        dispatch(addTaskAC(title))
     }
 
     return (
         <div className="App">
-            <SuperInput onChangeHandler={addTodoList}/>
-            {
-                todoLists.map(tl => {
-                    let tasksForTodolist = tasks[tl.id];
-                    if (tl.filter === "active") {
-                        tasksForTodolist = tasksForTodolist.filter(t => !t.isDone);
-                    }
-                    if (tl.filter === "completed") {
-                        tasksForTodolist = tasksForTodolist.filter(t => t.isDone);
-                    }
-                    return <Todolist
-                        key={tl.id}
-                        id={tl.id}
-                        title={tl.title}
-                        tasks={tasksForTodolist}
-                        removeTask={removeTask}
-                        changeFilter={changeFilter}
-                        addTask={addTask}
-                        changeTaskStatus={changeStatus}
-                        filter={tl.filter}
-                        removeTodolist={removeTodolist}
-                        updateTask={updateTask}
-                        updateTitle={updateTitle}
-                    />
-                })
-            }
+            <Todolist title="What to learn"
+                      removeTask={removeTask}
+                      addTask={addTask}
+            />
         </div>
     );
 }
