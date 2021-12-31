@@ -28,6 +28,9 @@ switch (action.type){
     case "CHANGE_FILTER":{
         return [...state.map(m=>m.id===action.payload.listId?{...m,filter:action.payload.newFilter}:m)]
     }
+    case "CHANGE_TITLE":{
+        return [...state.map(m=>m.id===action.payLoad.todoId?{...m,title:action.payLoad.newTitle}:m)]
+    }
     default:return state
 }
 }
@@ -35,7 +38,7 @@ switch (action.type){
 
 
 
-type allType=addTodoACType|removeTodoACType|changeFilterACType
+type allType=addTodoACType|removeTodoACType|changeFilterACType|changeTodoTitleACType
 
 export type addTodoACType=ReturnType<typeof addTodoAC>
 export const addTodoAC = (newTitle:string,newTodoId:string) => {
@@ -63,6 +66,16 @@ export const changeFilterAC = (listId:string,newFilter:FilterType) => {
       type:'CHANGE_FILTER',
       payload:{
           listId,newFilter,
+      }
+  }as const
+}
+
+export type changeTodoTitleACType=ReturnType<typeof changeTodoTitleAC>
+export const changeTodoTitleAC = (todoId:string,newTitle:string) => {
+  return{
+      type:'CHANGE_TITLE',
+      payLoad:{
+          todoId,newTitle,
       }
   }as const
 }

@@ -1,5 +1,5 @@
-import {v1} from "uuid";
-import {changeStatusAC, removeTaskAC, removeTodoTaskAC, TasksReducer} from "./TasksReducer";
+import {changeStatusAC, changeTaskTitleAC, removeTaskAC, removeTodoTaskAC, TasksReducer} from "./TasksReducer";
+import {changeTodoTitleAC, TodoListReducer, TodoListsType} from "./TodoListsReducer";
 
 export {}
 
@@ -20,6 +20,10 @@ const taskID_2 = '2'
 const taskID_3 = '3'
 const taskID_4 = '4'
 
+let initialStateTodo:TodoListsType[]=[
+    {id:todoListId1,title:"What to learn", filter:'All'},
+    {id:todoListId2,title:"What to buy", filter:'All'},
+]
 
 let initialState: TasksType = {
     [todoListId1]:
@@ -64,4 +68,17 @@ test('remove_list_and_tasks', ()=>{
     expect(copyState === initialState).toBe(false)  // не копируется объект
     expect(copyState[todoListId2]).toBe(undefined)
     expect(Object.keys(copyState).every(ev=>ev!==todoListId2)).toBe(true)
+})
+
+test('change_title_Todo', ()=>{
+    let copyState =TodoListReducer(initialStateTodo, changeTodoTitleAC(todoListId1,'Привет'))
+    expect(copyState === initialStateTodo).toBe(false)  // не копируется объект
+    expect(copyState[0].title==="Привет").toBe(true)
+})
+
+test('change_title_task', ()=>{
+    let copyState = TasksReducer(initialState, changeTaskTitleAC( todoListId1,taskID_2,'Привет'))
+    expect(copyState === initialState).toBe(false)  // не копируется объект
+    expect(copyState[todoListId1][1].title==="Привет").toBe(true)
+
 })

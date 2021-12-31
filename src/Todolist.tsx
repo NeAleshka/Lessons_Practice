@@ -1,7 +1,8 @@
-import {addTaskAC, changeStatusAC, removeTaskAC, TaskType} from "./redux/TasksReducer";
+import {addTaskAC, changeStatusAC, changeTaskTitleAC, removeTaskAC, TaskType} from "./redux/TasksReducer";
 import {useDispatch} from "react-redux";
 import {ChangeEvent, useState} from "react";
-import {FilterType} from "./redux/TodoListsReducer";
+import {changeTodoTitleAC, FilterType} from "./redux/TodoListsReducer";
+import EditableSpan from "./components/EditableSpan";
 
 
 type TodolistType = {
@@ -31,21 +32,28 @@ export const Todolist = ({filter,changeFilter,removeTodo, listId, title, taskFor
         dispatch(addTaskAC(listId, titleNewTask))
         setTitleNewTask('')
     }
+    const changeTodoTitle = (newTitle:string) => {
+        dispatch(changeTodoTitleAC(listId,newTitle))
+    }
+    const changeTaskTitle = (taskId:string,newTitle:string) => {
+      debugger
+        dispatch(changeTaskTitleAC(listId,taskId,newTitle))
+    }
+
     if (filter==='active'as FilterType){
         debugger
         taskForTodoList=taskForTodoList.filter(f=>!f.isDone)
     }
     if (filter==='completed'as FilterType){
-        debugger
         taskForTodoList=taskForTodoList.filter(f=>f.isDone)
     }
 
     return (
         <div style={{marginLeft: '20px'}}>
-            <h3>{title}
+            <h3>
+                <EditableSpan title={title} changeItem={changeTodoTitle}/>
                 <button onClick={() => removeTodo(listId)}>&times;</button>
             </h3>
-
             <input value={titleNewTask} onChange={changeTitleNewTask}/>
             <button onClick={addTask}>+</button>
             <ul style={{padding: '0'}}>
@@ -53,7 +61,8 @@ export const Todolist = ({filter,changeFilter,removeTodo, listId, title, taskFor
                         return <li style={{listStyle: 'none'}}>
                             <input key={task.id} type={"checkbox"} checked={task.isDone}
                                    onChange={() => changeStatusHandler(task.id)}/>
-                            <span>{task.title}</span>
+                          {/*<span>{task.title}</span>*/}
+                           <EditableSpan title={task.title} changeItem={()=>changeTaskTitle(task.id,task.title)}/>
                             <button onClick={() => removeTask(task.id)}
                                     style={{backgroundColor: 'red', color: 'white'}}>&times;</button>
                         </li>
