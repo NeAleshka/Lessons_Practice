@@ -14,7 +14,7 @@ const EditableSpan = (props: propsEditableSpanType) => {
     }
     const changeLocalTitleHandler = (e:ChangeEvent<HTMLInputElement>) => {
       setLocalTitle(e.currentTarget.value)
-        props.changeItem(localTitle)
+        props.changeItem(e.currentTarget.value)
     }
     const enterPress=(e:KeyboardEvent<HTMLInputElement>)=>{
         if(e.key==='Enter')

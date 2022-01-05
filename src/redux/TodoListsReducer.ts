@@ -1,7 +1,5 @@
-import {v1} from "uuid";
-
-export const todoListId1=v1()
-export const todoListId2=v1()
+export const todoListId1='todo1'
+export const todoListId2='todo2'
 
 export type FilterType="All"|'Active'|"Completed"
 export type TodoListsType={
@@ -34,8 +32,6 @@ switch (action.type){
     default:return state
 }
 }
-
-
 
 
 type allType=addTodoACType|removeTodoACType|changeFilterACType|changeTodoTitleACType

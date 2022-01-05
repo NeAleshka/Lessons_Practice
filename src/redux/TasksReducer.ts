@@ -12,22 +12,23 @@ export type TasksType = {
 
 export let initialState: TasksType = {
     [todoListId1]:
-        [{id: v1(), title: 'HTML', isDone: false},
-            {id: v1(), title: 'CSS', isDone: true},
-            {id: v1(), title: 'React', isDone: true},
-            {id: v1(), title: 'TypeScript', isDone: false}
+        [   {id: 'task1_1', title: 'HTML', isDone: false},
+            {id: 'task1_2', title: 'CSS', isDone: true},
+            {id: 'task1_3', title: 'React', isDone: true},
+            {id: 'task1_4', title: 'TypeScript', isDone: false}
         ],
     [todoListId2]:
         [
-            {id: v1(), title: 'Meat', isDone: false},
-            {id: v1(), title: 'Bread', isDone: false},
-            {id: v1(), title: 'Beer', isDone: false},
+            {id: 'task2_1', title: 'Meat', isDone: false},
+            {id: 'task2_2', title: 'Bread', isDone: false},
+            {id: 'task2_3', title: 'Beer', isDone: false},
         ]
 }
 
 export const TasksReducer = (state = initialState, action: allTasksReducersType): TasksType => {
     switch (action.type) {
         case "REMOVE_TASK": {
+
             return {
                 ...state,
                 [action.payload.listId]: state[action.payload.listId].filter(task => task.id !== action.payload.taskId)

@@ -73,7 +73,7 @@ test('remove_list_and_tasks', ()=>{
 test('change_title_Todo', ()=>{
     let copyState =TodoListReducer(initialStateTodo, changeTodoTitleAC(todoListId1,'Привет'))
     expect(copyState === initialStateTodo).toBe(false)  // не копируется объект
-    expect(copyState[0].title==="Привет").toBe(true)
+    expect(copyState[0].title).toBe("Привет")
 })
 
 test('change_title_task', ()=>{
