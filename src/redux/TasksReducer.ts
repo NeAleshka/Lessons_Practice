@@ -1,5 +1,6 @@
 import {v1} from "uuid";
 import {todoListId1, todoListId2} from "./TodoListsReducer";
+import {Dispatch} from "redux";
 
 export type TaskType = {
     id: string,
@@ -12,10 +13,10 @@ export type TasksType = {
 
 export let initialState: TasksType = {
     [todoListId1]:
-        [   {id: 'task1_1', title: 'HTML', isDone: false},
-            {id: 'task1_2', title: 'CSS', isDone: true},
-            {id: 'task1_3', title: 'React', isDone: true},
-            {id: 'task1_4', title: 'TypeScript', isDone: false}
+        [   {id: v1(), title: 'HTML', isDone: false},
+            {id: v1(), title: 'CSS', isDone: true},
+            {id: v1(), title: 'React', isDone: true},
+            {id: v1(), title: 'TypeScript', isDone: false}
         ],
     [todoListId2]:
         [
@@ -127,6 +128,10 @@ export const removeTodoTaskAC = (listId: string) => {
         }
     } as const
 }
+export const removeTodoTaskACThunk = (listId:string) =>(dispatch:Dispatch)=> {
+  dispatch(removeTodoTaskAC(listId))
+}
+
 
 export type changeTaskTitleACType = ReturnType<typeof changeTaskTitleAC>
 export const changeTaskTitleAC = (listId: string, taskId: string, newTitle: string) => {

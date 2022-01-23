@@ -1,5 +1,5 @@
 import React from 'react'
-import EditableSpan from "./EditableSpan";
+import {EditableSpan} from "./EditableSpan";
 import {TaskType} from "../redux/TasksReducer";
 
 type propsTaskType = {
@@ -9,7 +9,8 @@ type propsTaskType = {
     changeStatusHandler: (taskId: string) => void
 }
 
-const Task = (props: propsTaskType) => {
+const TaskMemo = (props: propsTaskType) => {
+
     return (
         <li  style={{listStyle: 'none'}}>
             <input type={"checkbox"}
@@ -22,4 +23,4 @@ const Task = (props: propsTaskType) => {
         </li>
     )
 }
-export default Task
+export const Task=React.memo(TaskMemo)
