@@ -4,7 +4,7 @@ const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
     withCredentials: true,
     headers: {
-        'API-KEY': 'a13622c4-d4bf-4100-8cd8-9ed3b5800639'
+        'API-KEY': '552d629c-2943-4e99-a733-e3c3adc34777'
     }
 })
 
@@ -31,12 +31,38 @@ export const todolistsAPI = {
     createTask(todolistId: string, title: string) {
         return instance.post<{ title: string }, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks`, {title});
     },
-    updateTask( model: TaskType) {
-        return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${model.todoListId}/tasks/${model.id}`, model);
+    updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
+        return instance.put<UpdateTaskModelType, AxiosResponse<ResponseType<{ item: TaskType }>>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
+    }
+}
+
+export const authApi={
+    login(data:LoginParamsType){
+        return instance.post<LoginParamsType,AxiosResponse<ResponseType<{userId:number}>>>('/auth/login',data)
+    },
+    me(){
+        return instance.get<ResponseType<MeResponseType>>('/auth/me')
+    },
+    logout(){
+        return instance.delete<ResponseType>('/auth/login')
     }
 }
 
 // types
+
+type MeResponseType={
+    id:number
+    email:string
+    login:string
+}
+
+export type LoginParamsType={
+    email:string,
+    password:string,
+    rememberMe:boolean,
+    captcha?:string
+}
+
 export type TodolistType = {
     id: string
     title: string
