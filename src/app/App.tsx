@@ -46,14 +46,16 @@ function App({demo = false}: PropsType) {
         <div className="App">
             <ErrorSnackbar/>
             <AppBar position="static">
-                <Toolbar style={{display:'flex',justifyContent:'center'}}>
-                   <Typography fontSize={'30px'} fontWeight={'bolder'} >ToDoLists.com</Typography>
-                    <SearchField sx={{backgroundColor:'white',marginLeft:'30px'}}  onChange={onChangeSearch}/>
-                    <IconButton sx={{marginLeft:'400px'}}>
+                {isLogin?<Toolbar style={{display:'flex',justifyContent:'center'}}>
+                    <Typography fontSize={'30px'} fontWeight={'bolder'} >ToDoLists.com</Typography>
+                    <SearchField sx={{backgroundColor: 'white', marginLeft: '30px'}} onChange={onChangeSearch}/>
+                    <IconButton sx={{marginLeft: '400px'}}>
                         <AccountCircleIcon/>
                     </IconButton>
-                    {isLogin && <Button color="inherit" onClick={()=>dispatch(logoutTC())}>Logout</Button>}
-                </Toolbar>
+                    <Button color="inherit" onClick={() => dispatch(logoutTC())}>Logout</Button>
+                </Toolbar>:<Toolbar style={{display:'flex',justifyContent:'center'}}>
+                    <Typography fontSize={'30px'} fontWeight={'bolder'} >ToDoLists.com</Typography>
+                </Toolbar>}
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>
             <Container fixed>
